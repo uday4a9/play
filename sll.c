@@ -98,10 +98,109 @@ NODE* delete_at_end_rec(NODE *root)
     }
 }
 
+NODE* create_node(int item)
+{
+    NODE *new;
+    new = (NODE*) malloc(sizeof(NODE));
+    if(new == NULL) {
+        puts("malloc failed");
+        exit(1);
+    }
+    new->item = item;
+    new->next = NULL;
+    return new;
+}
+
+NODE* insert_at_any_pos(NODE *root, int pos, int item)
+{
+    int i = 1;
+    NODE *new, *nxt, *prv;
+
+    if(pos < 0) {
+        puts("Invalid -ve position");
+        return root;
+    }
+
+    new = create_node(item);
+
+    if(pos==1 && root==NULL) {
+        root = new;
+        return root;
+    }
+
+    if(pos==1) {
+        new->next = root;
+        root = new;
+        return root;
+    }
+
+    nxt = root;
+    while(i < pos) {
+        prv = nxt;
+        if(prv == NULL) {
+            puts("Invalid postion, Beyond the size");
+            free(new);
+            new = NULL;
+            return root;
+        }
+        nxt = prv->next;
+        i += 1;
+    }
+    prv->next = new;
+    new->next = nxt;
+
+    return root;
+}
+
+NODE* delete_at_any_pos(NODE *root, int pos)
+{
+    int i=1;
+    NODE *prv, *tmp, *cur;
+    if(pos < 0) {
+        puts("Invalid -ve position");
+        return root;
+    }
+
+    if(root == NULL) {
+        puts("List empty, Notthong to delete");
+        return root;
+    }
+
+    if(pos==1 && root->next==NULL){
+        free(root);
+        root = NULL;
+        return root;
+    }
+
+    if(pos==1){
+        tmp = root;
+        root = root->next;
+        free(tmp);
+        tmp = NULL;
+        return root;
+    }
+
+    cur = root;
+    while(i < pos) {
+        prv = cur;
+        cur = cur->next;
+        if(cur == NULL) {
+            puts("Deleetion not possibe, Beyond position");
+            return root;
+        }
+        i += 1;
+    }
+    prv->next = cur->next;
+    cur->next = NULL;
+    free(cur);
+    cur = NULL;
+    return root;
+}
+
 int main()
 {
     NODE *front = NULL;
-    int ch, item;
+    int ch, item, pos;
 
     while(1) {
         puts("0. exit");
@@ -110,6 +209,8 @@ int main()
         puts("3. display");
         puts("4. Insert at end");
         puts("5. delete at end");
+        puts("6. insert at any position");
+        puts("7. delete at any position");
 
         printf("Enter one among abobve choices : ");
         scanf("%d", &ch);
@@ -138,6 +239,18 @@ int main()
             case 5: 
                     front = delete_at_end_rec(front);
                     display(front);
+                    break;
+            case 6:
+                    printf("Enter the element to be inserted: ");
+                    scanf("%d", &item);
+                    printf("Enter the position to insert:");
+                    scanf("%d", &pos);
+                    front = insert_at_any_pos(front, pos, item);
+                    break;
+            case 7:
+                    printf("Enter the position to delete:");
+                    scanf("%d", &pos);
+                    front = delete_at_any_pos(front, pos);
                     break;
         }
     }
