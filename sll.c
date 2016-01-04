@@ -162,7 +162,7 @@ NODE* delete_at_any_pos(NODE *root, int pos)
     }
 
     if(root == NULL) {
-        puts("List empty, Notthong to delete");
+        puts("List empty, Nothing to delete");
         return root;
     }
 
@@ -185,7 +185,7 @@ NODE* delete_at_any_pos(NODE *root, int pos)
         prv = cur;
         cur = cur->next;
         if(cur == NULL) {
-            puts("Deleetion not possibe, Beyond position");
+            puts("Deletion not possibe, Beyond position");
             return root;
         }
         i += 1;
@@ -194,7 +194,55 @@ NODE* delete_at_any_pos(NODE *root, int pos)
     cur->next = NULL;
     free(cur);
     cur = NULL;
+
     return root;
+}
+
+NODE *reverse(NODE *root)
+{
+    NODE *cur, *nxt, *prv=NULL;
+
+    cur = root;
+    while(cur != NULL) {
+        nxt = cur->next;
+        cur->next = prv;
+        prv = cur;
+        cur = nxt;
+    }
+    return prv;
+}
+
+NODE *reversen_rec(NODE *root, NODE *prv)
+{
+    if(root->next == NULL) {
+        root->next = prv;
+        return root;
+    }
+    else {
+        return reversen_rec(root->next, root);
+    }
+}
+
+NODE *reverse_rec(NODE *root)
+{
+    if(root == NULL)
+        return root;
+    return reversen_rec(root, NULL);
+}
+
+void freelist(NODE *root)
+{
+    NODE *tmp;
+
+    if(root == NULL)
+        return;
+    while(root != NULL) {
+        tmp = root;
+        root = root->next;
+
+        free(tmp);
+        tmp = NULL;
+    }
 }
 
 int main()
@@ -211,13 +259,15 @@ int main()
         puts("5. delete at end");
         puts("6. insert at any position");
         puts("7. delete at any position");
+        puts("8. reversing list");
 
         printf("Enter one among abobve choices : ");
         scanf("%d", &ch);
 
         switch(ch) {
             case 0: 
-                    puts("Bye.. Bye..");
+                    freelist(front);
+                    puts("Freed the whole memory");
                     exit(1);
             case 1: 
                     printf("Enter an item to insert in sll: ");
@@ -251,6 +301,11 @@ int main()
                     printf("Enter the position to delete:");
                     scanf("%d", &pos);
                     front = delete_at_any_pos(front, pos);
+                    break;
+            case 8:
+                    //front = reverse(front);
+                    front = reverse_rec(front);
+                    display(front);
                     break;
         }
     }
