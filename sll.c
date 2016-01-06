@@ -215,11 +215,16 @@ NODE *reverse(NODE *root)
 NODE *reversen_rec(NODE *root, NODE *prv)
 {
     if(root->next == NULL) {
+        // Here returning the root always always the entire function
+        // returns the last element address.
         root->next = prv;
         return root;
     }
     else {
-        return reversen_rec(root->next, root);
+        NODE *tmp;
+        tmp = reversen_rec(root->next, root);
+        root->next = prv;
+        return tmp;
     }
 }
 
