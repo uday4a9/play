@@ -250,10 +250,24 @@ void freelist(NODE *root)
     }
 }
 
+int is_palindrome(NODE **front, NODE *last)
+{
+    if(last == NULL)
+        return 1;
+
+    int i = is_palindrome(front, last->next);
+
+    int j = ((*front)->item == last->item);
+
+    *front = (*front)->next;
+
+    return j;
+}
+
 int main()
 {
-    NODE *front = NULL;
-    int ch, item, pos;
+    NODE *front = NULL, *tmp;
+    int ch, item, pos, ret;
 
     while(1) {
         puts("0. exit");
@@ -265,6 +279,7 @@ int main()
         puts("6. insert at any position");
         puts("7. delete at any position");
         puts("8. reversing list");
+        puts("9. Is Palindrome");
 
         printf("Enter one among abobve choices : ");
         scanf("%d", &ch);
@@ -312,6 +327,11 @@ int main()
                     front = reverse_rec(front);
                     display(front);
                     break;
+            case 9:
+                    tmp = front;
+                    is_palindrome(&front, front) ? puts("PALINDROME") : puts("NOT PALINDROME");
+                    front = tmp;
+                    display(front);
         }
     }
     return 0;
