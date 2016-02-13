@@ -245,6 +245,52 @@ void freelist(NODE *root)
     }
 }
 
+NODE* delete_nth_elem_from_end(NODE *root, int n)
+{
+    NODE *last, *prv, *cur;
+    int i=0;
+
+    if(root == NULL) {
+        puts("There are no elements in the list, Operation is not permissable");
+        return root;
+    }
+
+    if( n <= 0) {
+        puts("Deletion not possible, as n is -ve");
+        return root;
+    }
+
+    last = root;
+    while(i < n) {
+        if(last == NULL) {
+            printf("%d th position beyond the size of linked list\n", n);
+            return root;
+        }
+        last = last->next; 
+        i++;
+    }
+
+    cur = root;
+    while(last != NULL) {
+        prv = cur;
+        cur = cur->next;
+        last = last->next;
+    }
+
+    // If list contains only n no. of elements, It should treat as special case
+    // as deleting the first element
+
+    if(cur == root)
+        root = root->next;
+    else
+        prv->next = cur->next;
+    cur->next = NULL;
+    free(cur);
+    cur = NULL;
+
+    return root;
+}
+
 int main()
 {
     NODE *front = NULL;
@@ -260,9 +306,11 @@ int main()
         puts("6. insert at any position");
         puts("7. delete at any position");
         puts("8. reversing list");
+        puts("9. delete nth element from end");
 
         printf("Enter one among abobve choices : ");
         scanf("%d", &ch);
+        system("clear");
 
         switch(ch) {
             case 0: 
@@ -305,6 +353,12 @@ int main()
             case 8:
                     //front = reverse(front);
                     front = reverse_rec(front);
+                    display(front);
+                    break;
+            case 9:
+                    printf("Enter which position from end to be deleted:");
+                    scanf("%d", &pos);
+                    front = delete_nth_elem_from_end(front, pos);
                     display(front);
                     break;
         }
