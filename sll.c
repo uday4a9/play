@@ -215,11 +215,16 @@ NODE *reverse(NODE *root)
 NODE *reversen_rec(NODE *root, NODE *prv)
 {
     if(root->next == NULL) {
+        // Here returning the root always always the entire function
+        // returns the last element address.
         root->next = prv;
         return root;
     }
     else {
-        return reversen_rec(root->next, root);
+        NODE *tmp;
+        tmp = reversen_rec(root->next, root);
+        root->next = prv;
+        return tmp;
     }
 }
 
@@ -245,6 +250,7 @@ void freelist(NODE *root)
     }
 }
 
+<<<<<<< HEAD
 NODE* delete_nth_elem_from_end(NODE *root, int n)
 {
     NODE *last, *prv, *cur;
@@ -289,12 +295,26 @@ NODE* delete_nth_elem_from_end(NODE *root, int n)
     cur = NULL;
 
     return root;
+=======
+int is_palindrome(NODE **front, NODE *last)
+{
+    if(last == NULL)
+        return 1;
+
+    int i = is_palindrome(front, last->next);
+
+    int j = ((*front)->item == last->item);
+
+    *front = (*front)->next;
+
+    return j;
+>>>>>>> 56f4ada8c91a4092d723d402c0b7eeb7acd2340e
 }
 
 int main()
 {
-    NODE *front = NULL;
-    int ch, item, pos;
+    NODE *front = NULL, *tmp;
+    int ch, item, pos, ret;
 
     while(1) {
         puts("0. exit");
@@ -306,7 +326,11 @@ int main()
         puts("6. insert at any position");
         puts("7. delete at any position");
         puts("8. reversing list");
+<<<<<<< HEAD
         puts("9. delete nth element from end");
+=======
+        puts("9. Is Palindrome");
+>>>>>>> 56f4ada8c91a4092d723d402c0b7eeb7acd2340e
 
         printf("Enter one among abobve choices : ");
         scanf("%d", &ch);
@@ -356,11 +380,18 @@ int main()
                     display(front);
                     break;
             case 9:
+<<<<<<< HEAD
                     printf("Enter which position from end to be deleted:");
                     scanf("%d", &pos);
                     front = delete_nth_elem_from_end(front, pos);
                     display(front);
                     break;
+=======
+                    tmp = front;
+                    is_palindrome(&front, front) ? puts("PALINDROME") : puts("NOT PALINDROME");
+                    front = tmp;
+                    display(front);
+>>>>>>> 56f4ada8c91a4092d723d402c0b7eeb7acd2340e
         }
     }
     return 0;
