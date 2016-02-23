@@ -250,7 +250,6 @@ void freelist(NODE *root)
     }
 }
 
-<<<<<<< HEAD
 NODE* delete_nth_elem_from_end(NODE *root, int n)
 {
     NODE *last, *prv, *cur;
@@ -269,7 +268,7 @@ NODE* delete_nth_elem_from_end(NODE *root, int n)
     last = root;
     while(i < n) {
         if(last == NULL) {
-            printf("%d th position beyond the size of linked list\n", n);
+            printf("position %d is beyond the size of linked list\n", n);
             return root;
         }
         last = last->next; 
@@ -295,7 +294,8 @@ NODE* delete_nth_elem_from_end(NODE *root, int n)
     cur = NULL;
 
     return root;
-=======
+}
+
 int is_palindrome(NODE **front, NODE *last)
 {
     if(last == NULL)
@@ -308,7 +308,34 @@ int is_palindrome(NODE **front, NODE *last)
     *front = (*front)->next;
 
     return j;
->>>>>>> 56f4ada8c91a4092d723d402c0b7eeb7acd2340e
+}
+
+void check_cycle(NODE *root)
+{
+    NODE *slow, *fast;
+
+    if(!root) {
+        puts("List Empty, Nothing to perform");
+        return;
+    }
+
+    slow = root;
+    fast = slow->next;
+
+    while(1) {
+        if(!fast || !fast->next){
+            puts("No cycles found");
+            break;
+        }
+        else if(slow==fast || fast->next==slow){
+            printf("Cycle found %d at %d\n", slow->item, fast->item);
+            break;
+        }
+        else {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+    }
 }
 
 int main()
@@ -326,11 +353,9 @@ int main()
         puts("6. insert at any position");
         puts("7. delete at any position");
         puts("8. reversing list");
-<<<<<<< HEAD
-        puts("9. delete nth element from end");
-=======
         puts("9. Is Palindrome");
->>>>>>> 56f4ada8c91a4092d723d402c0b7eeb7acd2340e
+        puts("10. delete nth element from end");
+        puts("11. check cycles in list");
 
         printf("Enter one among abobve choices : ");
         scanf("%d", &ch);
@@ -380,18 +405,26 @@ int main()
                     display(front);
                     break;
             case 9:
-<<<<<<< HEAD
+                    tmp = front;
+                    is_palindrome(&front, front) ? puts("PALINDROME") : puts("NOT PALINDROME");
+                    front = tmp;
+                    display(front);
+            case 10:
                     printf("Enter which position from end to be deleted:");
                     scanf("%d", &pos);
                     front = delete_nth_elem_from_end(front, pos);
                     display(front);
                     break;
-=======
-                    tmp = front;
-                    is_palindrome(&front, front) ? puts("PALINDROME") : puts("NOT PALINDROME");
-                    front = tmp;
-                    display(front);
->>>>>>> 56f4ada8c91a4092d723d402c0b7eeb7acd2340e
+            case 11:
+                    // Establish the cycles
+                    //front->next = front;
+                    printf("Check whether given list is ciruclar or not ? : ");
+                    scanf("%d", &pos);
+                    if(pos)
+                        check_cycle(front);
+                    else
+                        puts("Enter other than zero to perform this operation");
+                    break;
         }
     }
     return 0;
