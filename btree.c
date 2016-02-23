@@ -95,8 +95,8 @@ int main(int argc, char **argv)
             case 0: 
                     root = free_tree(root);
                     puts("Exiting from the program");
-//                    exit(0);
-                    break;
+                    exit(0);
+//                    break;
             case 1:
                     printf("Enter an element to insert in tree : ");
                     scanf("%d", &element);
@@ -120,7 +120,8 @@ int main(int argc, char **argv)
             case 5:
                     puts("Clearing the list");
                     root = free_tree(root);
-                    break;
+                    exit(0);
+                    //break;
         }
     }
 
