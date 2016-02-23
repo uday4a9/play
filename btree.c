@@ -77,6 +77,36 @@ NODE* free_tree(NODE *root)
     return root;
 }
 
+void max(NODE *root)
+{
+    NODE *tmp;
+    
+    if(root == NULL) {
+        puts("Emtpy tree, Max can't findout");
+        return;
+    }
+
+    tmp = root;
+    while(tmp->right != NULL)
+        tmp = tmp->right;
+    printf("Max element in given BST is : %d\n", tmp->info);
+}
+
+void min(NODE *root)
+{
+    NODE *tmp;
+    
+    if(root == NULL) {
+        puts("Emtpy tree, Min can't findout");
+        return;
+    }
+
+    tmp = root;
+    while(tmp->left != NULL)
+        tmp = tmp->left;
+    printf("Min element in given BST is : %d\n", tmp->info);
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
@@ -89,8 +119,11 @@ int main(int argc, char **argv)
         puts("3.preorder");
         puts("4.postorder");
         puts("5.tree free");
+        puts("6.max element");
+        puts("7.min element");
         printf("Enter your choice: ");
         scanf("%d", &choice);
+        system("clear");
         switch(choice){
             case 0: 
                     root = free_tree(root);
@@ -122,6 +155,12 @@ int main(int argc, char **argv)
                     root = free_tree(root);
                     exit(0);
                     //break;
+           case 6:
+                    max(root);
+                    break;
+           case 7:
+                    min(root);
+                    break;
         }
     }
 
