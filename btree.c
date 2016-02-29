@@ -49,6 +49,10 @@ void inorder(NODE *root)
     }
 }
 
+void inorder_rec(NODE *root)
+{
+}
+
 void preorder(NODE *root)
 {
     if(root != NULL) {
@@ -156,6 +160,8 @@ int main(int argc, char **argv)
             case 2:
                     printf("inorder :");
                     inorder(root);
+                    puts("");
+                    inorder_rec(root);
                     puts("");
                     break;
             case 3:
