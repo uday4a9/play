@@ -2,6 +2,8 @@
 #include <assert.h>
 #include <stdlib.h> 
 
+#define MAX(a, b) (a > b ? a : b)
+
 struct node {
     struct node *left;
     int info;
@@ -107,6 +109,20 @@ void min(NODE *root)
     printf("Min element in given BST is : %d\n", tmp->info);
 }
 
+int height(NODE *root)
+{
+    if(root == NULL)
+        return 0;
+    return 1 + MAX(height(root->left), height(root->right));
+}
+
+int total(NODE *root)
+{
+    if(root == NULL)
+        return 0;
+    return 1 + total(root->left) + total(root->right);
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
@@ -121,6 +137,8 @@ int main(int argc, char **argv)
         puts("5.tree free");
         puts("6.max element");
         puts("7.min element");
+        puts("8.height");
+        puts("9.total");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -160,6 +178,12 @@ int main(int argc, char **argv)
                     break;
            case 7:
                     min(root);
+                    break;
+           case 8:
+                    printf("Height : %d \n",height(root));
+                    break;
+           case 9:
+                    printf("Total elements in tree : %d \n", total(root));
                     break;
         }
     }
