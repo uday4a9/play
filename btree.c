@@ -3,6 +3,7 @@
 #include <stdlib.h> 
 
 #define MAX(a, b) (a > b ? a : b)
+#define SLIMIT 100
 
 struct node {
     struct node *left;
@@ -11,6 +12,39 @@ struct node {
 };
 
 typedef struct node NODE;
+
+// Need to create a stack and do perform operations on that
+NODE *stack[SLIMIT];
+int top=-1; // stack top value
+
+void push(NODE *tmp)
+{
+    if(top == SLIMIT - 1) {
+        puts("Stack OVERFLOW");
+        return;
+    }
+    stack[++top] = tmp;
+}
+
+NODE *pop()
+{
+    if(top == -1){
+        puts("Stack UNDERFLOW");
+        return NULL;
+    }
+
+    return stack[top--];
+}
+
+int isempty()
+{
+    return top==-1;
+}
+
+int isfull()
+{
+    return top==SLIMIT-1;
+}
 
 NODE* create_node(int info)
 {
@@ -51,6 +85,35 @@ void inorder(NODE *root)
 
 void inorder_rec(NODE *root)
 {
+    // L N R - way of accessing
+    NODE *tmp, *cur;
+
+    cur = root;
+    if(cur == NULL) {
+        puts("Empty tree, Nothing to print");
+        return;
+    }
+
+    printf("Inorder non- recursive : ");
+    while(1)
+    {
+        // Need to insert the all left side nodes.
+        if(cur != NULL) {
+            push(cur);
+            cur = cur->left;
+        }
+        else{
+            if(!isempty()) {
+                // If there is any right node exist, again put all left nodes in stack
+                tmp = pop();
+                printf("%4d", tmp->info);
+                cur = (tmp->right != NULL) ? tmp->right : NULL;
+            }
+            else
+                break;
+        }
+    }
+    puts("");
 }
 
 void preorder(NODE *root)
@@ -60,6 +123,30 @@ void preorder(NODE *root)
         preorder(root->left);
         preorder(root->right);
     }
+}
+
+void preorder_rec(NODE *root)
+{
+    NODE *tmp, *cur;
+
+    if(root == NULL) {
+        puts("Tree empty, Nothing to print");
+        return;
+    }
+
+    cur = root;
+    push(cur);
+
+    printf("pre order non-recursive : ");
+    while(!isempty()) {
+        tmp = pop();
+        printf("%4d", tmp->info);
+        if(tmp->right != NULL)
+            push(tmp->right);
+        if(tmp->left != NULL)
+            push(tmp->left);
+    }
+    puts("");
 }
 
 void postorder(NODE *root)
@@ -168,10 +255,12 @@ int main(int argc, char **argv)
                     printf("preorder :");
                     preorder(root);
                     puts("");
+                    preorder_rec(root);
                     break;
             case 4:
                     printf("postorder :");
                     postorder(root);
+                    puts("");
                     puts("");
                     break;
             case 5:
