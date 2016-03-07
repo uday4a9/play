@@ -269,22 +269,30 @@ int total(NODE *root)
     return 1 + total(root->left) + total(root->right);
 }
 
+int sum(NODE *root)
+{
+    if (root == NULL)
+        return 0;
+    return root->info + sum(root->left) + sum(root->right);
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
     int choice, element;
 
     while(1) {
-        puts("0.exit");
-        puts("1.insert");
-        puts("2.inorder");
-        puts("3.preorder");
-        puts("4.postorder");
-        puts("5.tree free");
-        puts("6.max element");
-        puts("7.min element");
-        puts("8.height");
-        puts("9.total");
+        puts(" 0.exit");
+        puts(" 1.insert");
+        puts(" 2.inorder");
+        puts(" 3.preorder");
+        puts(" 4.postorder");
+        puts(" 5.tree free");
+        puts(" 6.max element");
+        puts(" 7.min element");
+        puts(" 8.height");
+        puts(" 9.total elements in tree");
+        puts("10.sum of tree");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -335,6 +343,9 @@ int main(int argc, char **argv)
                     break;
            case 9:
                     printf("Total elements in tree : %d \n", total(root));
+                    break;
+           case 10:
+                    printf("Tree sum : %d\n", sum(root));
                     break;
         }
     }
