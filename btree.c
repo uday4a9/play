@@ -36,14 +36,34 @@ NODE *pop()
     return stack[top--];
 }
 
+void display()
+{
+    int i=0;
+
+    if(top == -1) {
+        puts("Stack empty");
+        return;
+    }
+
+    printf("Stack : ");
+    for(i=0; i<=top; i++)
+        printf(" %4d |", stack[i]->info);
+    puts("");
+}
+
 int isempty()
 {
-    return top==-1;
+    return top == -1;
 }
 
 int isfull()
 {
-    return top==SLIMIT-1;
+    return top == SLIMIT-1;
+}
+
+NODE* peek()
+{
+    return stack[top];
 }
 
 NODE* create_node(int info)
@@ -83,7 +103,7 @@ void inorder(NODE *root)
     }
 }
 
-void inorder_rec(NODE *root)
+void inorder_nrec(NODE *root)
 {
     // L N R - way of accessing
     NODE *tmp, *cur;
@@ -125,7 +145,7 @@ void preorder(NODE *root)
     }
 }
 
-void preorder_rec(NODE *root)
+void preorder_nrec(NODE *root)
 {
     NODE *tmp, *cur;
 
@@ -156,6 +176,41 @@ void postorder(NODE *root)
         postorder(root->right);
         printf("%3d", root->info);
     }
+}
+
+void postorder_nrec(NODE *root)
+{
+    NODE *cur, *tmp;
+
+    if(root == NULL) {
+        puts("Tree empty, nothing to print");
+        return;
+    }
+
+    printf("post order non-recursive : ");
+    cur = root;
+    do {
+        while(cur) {
+            if(cur->right)
+                push(cur->right);
+            push(cur);
+            cur = cur->left;
+        }
+
+        tmp = pop();
+
+        if(tmp->right && tmp->right == peek()) {
+            cur = pop();
+            //printf("%4d", cur->info);
+            push(tmp);
+            cur = tmp->right;
+        }
+        else {
+            printf("%4d", tmp->info);
+            cur = NULL;
+        }
+    } while(!isempty());
+
 }
 
 NODE* free_tree(NODE *root)
@@ -248,19 +303,20 @@ int main(int argc, char **argv)
                     printf("inorder :");
                     inorder(root);
                     puts("");
-                    inorder_rec(root);
+                    inorder_nrec(root);
                     puts("");
                     break;
             case 3:
                     printf("preorder :");
                     preorder(root);
                     puts("");
-                    preorder_rec(root);
+                    preorder_nrec(root);
                     break;
             case 4:
                     printf("postorder :");
                     postorder(root);
                     puts("");
+                    postorder_nrec(root);
                     puts("");
                     break;
             case 5:
