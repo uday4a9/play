@@ -276,10 +276,71 @@ int sum(NODE *root)
     return root->info + sum(root->left) + sum(root->right);
 }
 
+int same(NODE *root1, NODE *root2)
+{
+    if(root1 == NULL || root2 == NULL)
+        return 0;
+
+    return ((root1->info == root2->info) && 
+           same(root1->left, root2->left) && 
+           same(root1->right, root2->right));
+}
+
+int issame(NODE *root1, NODE *root2)
+{
+    if(root1 == NULL && root2 == NULL)
+        return 999;
+    if(root1 == root2) {
+        puts("Both trees are same referenced");
+        return 1;
+    }
+    return same(root1, root2);
+}
+
+int ismirror(NODE *root1, NODE *root2)
+{
+    if(root1 == NULL || root2 == NULL)
+        return 0;
+    return ((root1->info == root2->info) &&
+            ismirror(root1->left, root1->right)  &&
+            ismirror(root1->right, root1->left));
+}
+
+void mirror_image(NODE *root)
+{
+    NODE *tmp;
+    if(root != NULL){
+        mirror_image(root->left);
+        mirror_image(root->right);
+        tmp = root->left;
+        root->left = root->right;
+        root->right = tmp;
+    }
+}
+
+int is_sum_tree(NODE *root)
+{
+    //if(root == NULL)
+    //    return 0;
+
+    if ((root->info == (sum(root->left) + sum(root->right))) &&
+           is_sum_tree(root->left) &&
+           is_sum_tree(root->right))
+        return 1;
+    return 0;
+}
+
+int create_sum_tree(NODE *root)
+{
+    if(root == NULL)
+        return 0;
+    return (root->info += (create_sum_tree(root->left) + create_sum_tree(root->right)));
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
-    int choice, element;
+    int choice, element, rc;
 
     while(1) {
         puts(" 0.exit");
@@ -293,6 +354,10 @@ int main(int argc, char **argv)
         puts(" 8.height");
         puts(" 9.total elements in tree");
         puts("10.sum of tree");
+        puts("11.same tree ?");
+        puts("12.Is mirror image");
+        puts("13.mirror image of a tree");
+        puts("14.is sum tree");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -346,6 +411,39 @@ int main(int argc, char **argv)
                     break;
            case 10:
                     printf("Tree sum : %d\n", sum(root));
+                    break;
+           case 11:
+                    rc = issame(root, root->left);
+                    if(rc == 1)
+                        puts("Both are same");
+                    else if(rc == 0)
+                        puts("Both are not same");
+                    else
+                        puts("Both trees are empty");
+           case 12:
+                    rc = ismirror(root, root->left);
+                    if(rc == 0)
+                        puts("Not a mirror image tree");
+                    else
+                        puts("It's mirror image tree");
+                    break;
+           case 13:
+                    inorder(root);
+                    puts("");
+                    mirror_image(root);
+                    inorder(root);
+                    puts("");
+                    break;
+           case 14:
+                    inorder(root);
+                    puts("");
+                    create_sum_tree(root);
+                    inorder(root);
+                    puts("");
+                    if(is_sum_tree(root) == 1)
+                        puts("It's a sum tree");
+                    else
+                        puts("It's not a sum tree");
                     break;
         }
     }
