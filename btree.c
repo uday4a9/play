@@ -66,6 +66,38 @@ NODE* peek()
     return stack[top];
 }
 
+// Creating QUEUE 
+NODE *queue[SLIMIT];
+int front=-1, rear=-1;
+
+void insertq(NODE *tmp)
+{
+    if(rear == SLIMIT - 1) {
+        puts("Queue full, INsertion not possible");
+        return;
+    }
+
+    if(front == -1)
+        front = 0;
+    queue[++rear] = tmp;
+}
+
+NODE * deleteq()
+{
+    if(rear == -1 || front == rear+1) {
+        puts("Queue empty, Nothing to remove from queue");
+        return NULL;
+    }
+    return queue[front++];
+}
+
+int isQempty()
+{
+    if((front == -1 && rear == -1) || front == rear + 1)
+        return 1;
+    return 0;
+}
+
 NODE* create_node(int info)
 {
     NODE *new;
@@ -337,10 +369,89 @@ int create_sum_tree(NODE *root)
     return (root->info += (create_sum_tree(root->left) + create_sum_tree(root->right)));
 }
 
+int countLeaves(NODE *root)
+{
+    if(root == NULL)
+        return 0;
+    if(root->left == NULL && root->right==NULL)
+        return 1;
+    return countLeaves(root->left) + countLeaves(root->right);
+}
+
+void search(NODE *root, int key)
+{
+    NODE *tmp;
+
+    if(root == NULL) {
+        puts("Tree empty, Nothing to search");
+        return;
+    } 
+
+    tmp = root;
+    while(tmp) {
+        if(key < tmp->info)
+            tmp = tmp->left;
+        else if(key > tmp->info)
+            tmp = tmp->right;
+        else if(key == tmp->info) {
+            puts("Element found");
+            break;
+        }
+    }
+    if(tmp == NULL)
+        puts("Element not found in tree");
+}
+
+void level_order(NODE *root)
+{
+    NODE *tmp; 
+
+    if(root == NULL) {
+        puts("Tree empty, Nothing to print");
+        return;
+    }
+
+    printf("Level order : ");
+    insertq(root);
+    while(!isQempty()){
+        tmp = deleteq();
+        printf("%4d", tmp->info);
+        if(tmp->left)
+            insertq(tmp->left);
+        if(tmp->right)
+            insertq(tmp->right);
+    }
+    puts("");
+}
+
+void left_view(NODE *root, int level, int *clevel)
+{
+    if(root == NULL)
+        return;
+    if(*clevel < level) {
+        printf("%4d", root->info);
+        *clevel += 1;
+    }
+    left_view(root->left, level + 1, clevel);
+    left_view(root->right, level + 1, clevel);
+}
+
+void right_view(NODE *root, int level, int *clevel)
+{
+    if(root == NULL)
+        return;
+    if(*clevel < level) {
+        printf("%4d", root->info);
+        *clevel += 1;
+    }
+    right_view(root->right, level + 1, clevel);
+    right_view(root->left, level + 1, clevel);
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
-    int choice, element, rc;
+    int choice, element, rc, maxv;
 
     while(1) {
         puts(" 0.exit");
@@ -358,6 +469,10 @@ int main(int argc, char **argv)
         puts("12.Is mirror image");
         puts("13.mirror image of a tree");
         puts("14.is sum tree");
+        puts("15.count leaves");
+        puts("16.Search for given element");
+        puts("17.Level order traversal");
+        puts("18.Views of tree");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -444,6 +559,27 @@ int main(int argc, char **argv)
                         puts("It's a sum tree");
                     else
                         puts("It's not a sum tree");
+                    break;
+           case 15:
+                    printf("Count of leaves : %d\n", countLeaves(root));
+                    break;
+           case 16:
+                    printf("Enter an element to insert in tree : ");
+                    scanf("%d", &element);
+                    search(root, element);
+                    break;
+           case 17:
+                    level_order(root);
+                    break;
+           case 18:
+                    maxv = 0;
+                    printf("Left view of binary tree : ");
+                    left_view(root, 1, &maxv);
+                    puts("");
+                    maxv = 0;
+                    printf("Right view of binary tree : ");
+                    right_view(root, 1, &maxv);
+                    puts("");
                     break;
         }
     }
