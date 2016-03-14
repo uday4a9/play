@@ -448,6 +448,28 @@ void right_view(NODE *root, int level, int *clevel)
     right_view(root->left, level + 1, clevel);
 }
 
+int freenode(NODE *root)
+{
+    int size;
+    size = 2 * sizeof(root->left) + sizeof(int);
+    free(root);
+    root = NULL;
+    return size;
+}
+
+int freetreesize(NODE *root)
+{
+    static int size = 0;
+
+    if(root == NULL)
+        return 0;
+
+    freetreesize(root->left);
+    freetreesize(root->right);
+    size += freenode(root);
+    return size;
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
@@ -473,6 +495,7 @@ int main(int argc, char **argv)
         puts("16.Search for given element");
         puts("17.Level order traversal");
         puts("18.Views of tree");
+        puts("19.free tree size");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -580,6 +603,10 @@ int main(int argc, char **argv)
                     printf("Right view of binary tree : ");
                     right_view(root, 1, &maxv);
                     puts("");
+                    break;
+          case 19:
+                    printf("Total free size : %d \n", freetreesize(root));
+                    root = NULL;
                     break;
         }
     }
