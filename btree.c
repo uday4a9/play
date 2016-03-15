@@ -482,15 +482,92 @@ void treeleafs(NODE *root)
 
 int isbst(NODE *root)
 {
+    static NODE *prev = NULL;
     if(root != NULL) {
+        if(!isbst(root->left))
+            return 0;
 
+        if(prev != NULL && root->info < prev->info)
+            return 0;
+
+        prev = root;
+        return isbst(root->right);
     }
+    return 1;
+}
+
+void printarray(int *array, int index, int num)
+{
+    int i;
+    printf("path%d : ", num);
+    for(i = 0; i<index; i++)
+        printf("%4d", array[i]);
+    puts("");
+
+}
+
+void printpaths(NODE *root, int *arr, int index)
+{
+    static int num=0;
+    if(root != NULL) {
+        arr[index++] = root->info;
+
+        printpaths(root->left, arr, index);
+        printpaths(root->right, arr, index);
+
+        if(!root->left && !root->right) {
+            ++num;
+            printarray(arr, index, num);
+        }
+    }
+}
+
+void print_element_distance(NODE *root, int dist)
+{
+    if(root == NULL)
+        return;
+
+    if(dist == 0)
+        printf("%4d", root->info);
+
+    print_element_distance(root->left, dist - 1);
+    print_element_distance(root->right, dist - 1);
+}
+
+void levelnline(NODE *root)
+{
+    int maxheight, i;
+
+    maxheight = height(root);
+
+    for(i = 0; i < maxheight; i++) {
+        printf("level %d : ", i);
+        print_element_distance(root, i);
+        puts("");
+    }
+}
+
+int getLevel(NODE *root, int info, int level)
+{
+    int glevel;
+
+    if(root == NULL)
+        return 0;
+
+    if(root->info == info)
+        return level;
+
+    glevel = getLevel(root->left, info, level + 1);
+    if (glevel)
+        return level;
+    glevel = getLevel(root->right, info, level + 1);
+    return glevel;
 }
 
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
-    int choice, element, rc, maxv;
+    int choice, element, rc, maxv, arr[20], dist;
 
     while(1) {
         puts(" 0.exit");
@@ -515,6 +592,10 @@ int main(int argc, char **argv)
         puts("19.free tree size");
         puts("20.Tree leafs");
         puts("21.is BST");
+        puts("22.print paths to binary tree");
+        puts("23.print elements in certain distance");
+        puts("24.level n line");
+        puts("25.get level for given element");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -630,6 +711,34 @@ int main(int argc, char **argv)
           case 20:
                     treeleafs(root);
                     puts("");
+                    break;
+          case 21:
+//                    root->left->info = root->info+13;
+                    if(isbst(root))
+                        puts("It's BST");
+                    else
+                        puts("It's not BST");
+                    break;
+          case 22:
+                    printpaths(root, arr, 0);
+                    break;
+          case 23:
+                    printf("Enter the distance : ");
+                    scanf("%d", &dist);
+                    print_element_distance(root, dist);
+                    puts("");
+                    break;
+          case 24:
+                    levelnline(root);
+                    break;
+          case 25:
+                    printf("Enter an element to get the level : ");
+                    scanf("%d", &element);
+                    dist = getLevel(root, element, 1);
+                    if(dist > 0)
+                        printf("Element %d occurs at level %d\n", element, dist);
+                    else
+                        puts("Element not available in the list");
                     break;
         }
     }
