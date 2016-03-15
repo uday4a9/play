@@ -470,6 +470,23 @@ int freetreesize(NODE *root)
     return size;
 }
 
+void treeleafs(NODE *root)
+{
+    if(root != NULL) {
+        treeleafs(root->left);
+        treeleafs(root->right);
+        if(!root->left && !root->right)
+            printf("%4d", root->info);
+    }
+}
+
+int isbst(NODE *root)
+{
+    if(root != NULL) {
+
+    }
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
@@ -496,6 +513,8 @@ int main(int argc, char **argv)
         puts("17.Level order traversal");
         puts("18.Views of tree");
         puts("19.free tree size");
+        puts("20.Tree leafs");
+        puts("21.is BST");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -607,6 +626,10 @@ int main(int argc, char **argv)
           case 19:
                     printf("Total free size : %d \n", freetreesize(root));
                     root = NULL;
+                    break;
+          case 20:
+                    treeleafs(root);
+                    puts("");
                     break;
         }
     }
