@@ -549,19 +549,14 @@ void levelnline(NODE *root)
 
 int getLevel(NODE *root, int info, int level)
 {
-    int glevel;
-
     if(root == NULL)
         return 0;
 
     if(root->info == info)
         return level;
 
-    glevel = getLevel(root->left, info, level + 1);
-    if (glevel)
-        return level;
-    glevel = getLevel(root->right, info, level + 1);
-    return glevel;
+    return getLevel(root->left, info, level + 1) | \
+           getLevel(root->right, info, level + 1);
 }
 
 int main(int argc, char **argv)

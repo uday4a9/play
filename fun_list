@@ -1,5 +1,4 @@
 NODE* search_node(NODE *root, int key)
-int maxdepth(NODE *root)
 int diameter(NODE *root)
 NODE* delete(NODE *root)
 int hasPathSum(NODE *root, int sum)
