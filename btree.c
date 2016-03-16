@@ -559,10 +559,30 @@ int getLevel(NODE *root, int info, int level)
            getLevel(root->right, info, level + 1);
 }
 
+void print_tree_in_range(NODE *root, int from, int to)
+{
+    if(root != NULL)
+    {
+        print_tree_in_range(root->left, from, to);
+        if(root->info >= from && root->info <= to)
+            printf("%4d", root->info);
+        print_tree_in_range(root->right, from, to);
+    }
+}
+
+int get_level_diff(NODE *root)
+{
+    if(root == NULL)
+        return 0;
+    return root->info - get_level_diff(root->left)\
+        - get_level_diff(root->right);
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
     int choice, element, rc, maxv, arr[20], dist;
+    int from, to;
 
     while(1) {
         puts(" 0.exit");
@@ -591,6 +611,8 @@ int main(int argc, char **argv)
         puts("23.print elements in certain distance");
         puts("24.level n line");
         puts("25.get level for given element");
+        puts("26.print elements in given range");
+        puts("27.Get level diff");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -735,6 +757,17 @@ int main(int argc, char **argv)
                     else
                         puts("Element not available in the list");
                     break;
+          case 26:
+                    printf("Enter two elements range : ");
+                    scanf("%d%d", &from, &to);
+                    print_tree_in_range(root, from, to);
+                    puts("");
+                    break;
+          case 27:
+                    rc = get_level_diff(root);
+                    printf("Diff is : %d \n", rc);
+                    break;
+
         }
     }
 
