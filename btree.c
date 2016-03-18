@@ -575,7 +575,23 @@ int get_level_diff(NODE *root)
     if(root == NULL)
         return 0;
     return root->info - get_level_diff(root->left)\
-        - get_level_diff(root->right);
+                      - get_level_diff(root->right);
+}
+
+int diameter(NODE *root)
+{
+    int lh, rh, ld, rd;
+
+    if(root == NULL)
+        return 0;
+
+    lh = height(root->left);
+    rh = height(root->right);
+
+    ld = diameter(root->left);
+    rd = diameter(root->right);
+
+    return MAX(lh + rh + 1, MAX(ld, rd));
 }
 
 int main(int argc, char **argv)
@@ -613,6 +629,7 @@ int main(int argc, char **argv)
         puts("25.get level for given element");
         puts("26.print elements in given range");
         puts("27.Get level diff");
+        puts("28.diameter of given tree");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -767,7 +784,10 @@ int main(int argc, char **argv)
                     rc = get_level_diff(root);
                     printf("Diff is : %d \n", rc);
                     break;
-
+          case 28:
+                    dist = diameter(root);
+                    printf("Diameter of given tree : %d\n", dist);
+                    break;
         }
     }
 
