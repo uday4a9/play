@@ -594,6 +594,48 @@ int diameter(NODE *root)
     return MAX(lh + rh + 1, MAX(ld, rd));
 }
 
+NODE *minvaluenode(NODE *root)
+{
+    while(root->left)
+        root = root->left;
+    return root;
+}
+
+NODE* delete_node_from_tree(NODE *root, int key)
+{
+    NODE *tmp;
+
+    if(root == NULL)
+        return root;
+
+    if(key < root->info)
+        root->left = delete_node_from_tree(root->left, key);
+    else if(key > root->info)
+        root->right = delete_node_from_tree(root->right, key);
+    else {
+        if(root->left && root->right) {
+            // findout min v alue in given right tree to it
+            tmp = minvaluenode(root->right);
+            // swap the value with current
+            root->info = tmp->info;
+            // delte the swapped value from tree
+            root->right = delete_node_from_tree(root->right, key);
+        }
+        else {
+            tmp = root;
+            if(root->left)
+                root = root->left;
+            else if(root->right)
+                root = root->right;
+            else
+                root = NULL;
+            free(tmp);
+            tmp = NULL;
+        }
+    }
+    return root;
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
@@ -630,6 +672,7 @@ int main(int argc, char **argv)
         puts("26.print elements in given range");
         puts("27.Get level diff");
         puts("28.diameter of given tree");
+        puts("29.delete a node from tree");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -787,6 +830,12 @@ int main(int argc, char **argv)
           case 28:
                     dist = diameter(root);
                     printf("Diameter of given tree : %d\n", dist);
+                    break;
+          case 29:
+                    printf("Enter an element to be deleted from tree : ");
+                    scanf("%d", &element);
+                    root = delete_node_from_tree(root, element);
+                    inorder(root);
                     break;
         }
     }
