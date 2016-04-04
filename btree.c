@@ -619,7 +619,7 @@ NODE* delete_node_from_tree(NODE *root, int key)
             // swap the value with current
             root->info = tmp->info;
             // delte the swapped value from tree
-            root->right = delete_node_from_tree(root->right, key);
+            root->right = delete_node_from_tree(root->right, tmp->info);
         }
         else {
             tmp = root;
