@@ -522,6 +522,33 @@ void printpaths(NODE *root, int *arr, int index)
     }
 }
 
+void printpathsum(int *arr, int index)
+{
+    int i, sum=0;
+    for(i=0; i<index; i++) {
+        printf("%4d", arr[i]);
+        sum += arr[i];
+    }
+    printf(" => sum is : %4d\n", sum);
+}
+
+void sum_of_each_path(NODE *root, int *arr, int index)
+{
+    static int num;
+    if(root != NULL){
+        arr[index++] = root->info;
+
+        sum_of_each_path(root->left, arr, index);
+        sum_of_each_path(root->right, arr, index);
+
+        if(!root->left && !root->right) {
+            ++num;
+            printpathsum(arr, index);
+        }
+
+    }
+}
+
 void print_element_distance(NODE *root, int dist)
 {
     if(root == NULL)
@@ -673,6 +700,7 @@ int main(int argc, char **argv)
         puts("27.Get level diff");
         puts("28.diameter of given tree");
         puts("29.delete a node from tree");
+        puts("30.sum of each payth in tree");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -836,6 +864,9 @@ int main(int argc, char **argv)
                     scanf("%d", &element);
                     root = delete_node_from_tree(root, element);
                     inorder(root);
+                    break;
+          case 30:
+                    sum_of_each_path(root, arr, 0);
                     break;
         }
     }
