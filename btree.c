@@ -663,11 +663,22 @@ NODE* delete_node_from_tree(NODE *root, int key)
     return root;
 }
 
+int hasPathSum(NODE *root, int sum)
+{
+    int remain;
+
+    if(root == NULL)
+        return (sum == 0);
+
+    remain = sum - root->info;
+    return (hasPathSum(root->left, remain) || hasPathSum(root->right, remain));
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL;
     int choice, element, rc, maxv, arr[20], dist;
-    int from, to;
+    int from, to, result;
 
     while(1) {
         puts(" 0.exit");
@@ -700,7 +711,8 @@ int main(int argc, char **argv)
         puts("27.Get level diff");
         puts("28.diameter of given tree");
         puts("29.delete a node from tree");
-        puts("30.sum of each payth in tree");
+        puts("30.sum of each path in tree");
+        puts("31.has path sum");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -867,6 +879,14 @@ int main(int argc, char **argv)
                     break;
           case 30:
                     sum_of_each_path(root, arr, 0);
+                    break;
+          case 31:
+                    printf("Enter an element to be deleted from tree : ");
+                    scanf("%d", &result);
+                    if(hasPathSum(root, result ))
+                        puts("sum found");
+                    else
+                        puts("sum not found");
                     break;
         }
     }

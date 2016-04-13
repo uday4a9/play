@@ -1,5 +1,4 @@
 NODE* search_node(NODE *root, int key)
-int hasPathSum(NODE *root, int sum)
 NODE* findLCAutil(NODE *root, int first, int second, int *s1, int *s2)
 int find(NODE *root, int number)
 NODE* findLCA(NODE *root, int first, int second)
