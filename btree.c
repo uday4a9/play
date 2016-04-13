@@ -674,9 +674,50 @@ int hasPathSum(NODE *root, int sum)
     return (hasPathSum(root->left, remain) || hasPathSum(root->right, remain));
 }
 
+NODE* findnode(NODE *root, int key)
+{
+    NODE *tmp;
+
+    tmp = root;
+    while(tmp) {
+        if(key < tmp->info)
+            tmp = tmp->left;
+        else if(key > tmp->info)
+            tmp = tmp->right;
+        else
+            return tmp;
+    }
+    return tmp;
+}
+
+NODE* successor(NODE *root, NODE *tmp)
+{
+    NODE *succ = NULL;
+
+    if(root==NULL || tmp==NULL)
+        return NULL;
+
+    if(tmp->right)
+        return minvaluenode(tmp->right);
+
+    if(!tmp->right) {
+        while(1) {
+            if(tmp->info < root->info) {
+                succ = root;
+                root = root->left;
+            }
+            else if(tmp->info > root->info)
+                root = root->right;
+            else
+                break;
+        }
+    }
+    return succ;
+}
+
 int main(int argc, char **argv)
 {
-    NODE *root=NULL;
+    NODE *root=NULL, *final=NULL, *searched=NULL;
     int choice, element, rc, maxv, arr[20], dist;
     int from, to, result;
 
@@ -713,6 +754,7 @@ int main(int argc, char **argv)
         puts("29.delete a node from tree");
         puts("30.sum of each path in tree");
         puts("31.has path sum");
+        puts("32.successor of the given node");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -887,6 +929,20 @@ int main(int argc, char **argv)
                         puts("sum found");
                     else
                         puts("sum not found");
+                    break;
+          case 32:
+                    printf("Enter an element to findout successors : ");
+                    scanf("%d", &element);
+                    searched = findnode(root, element);
+                    if(!searched) {
+                        puts("Element not in the list, Successor can't find out for it");
+                        break;
+                    }
+                    final = successor(root, searched);
+                    if(final)
+                        printf("Successor node : %d\n", final->info);
+                    else
+                        puts("No more successor node");
                     break;
         }
     }
