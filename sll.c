@@ -303,6 +303,9 @@ int is_palindrome(NODE **front, NODE *last)
 
     int i = is_palindrome(front, last->next);
 
+    if ( i == 0)
+        return i;
+
     int j = ((*front)->item == last->item);
 
     *front = (*front)->next;
@@ -338,6 +341,30 @@ void check_cycle(NODE *root)
     }
 }
 
+void detect_and_remove_cycles(NODE *front)
+{
+    NODE *slow, *fast;
+
+    slow = front;
+    fast = slow->next;
+    while(fast && fast->next) {
+        if(slow == fast)
+            break;
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    if(fast == slow){
+        puts("Cycle detected and removed");
+        slow = front;
+        while(slow != fast->next) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        fast->next = NULL;
+    }
+}
+
 int main()
 {
     NODE *front = NULL, *tmp;
@@ -356,6 +383,7 @@ int main()
         puts("9. Is Palindrome");
         puts("10. delete nth element from end");
         puts("11. check cycles in list");
+        puts("12. check and remove cycles in list");
 
         printf("Enter one among abobve choices : ");
         scanf("%d", &ch);
@@ -409,6 +437,7 @@ int main()
                     is_palindrome(&front, front) ? puts("PALINDROME") : puts("NOT PALINDROME");
                     front = tmp;
                     display(front);
+                    break;
             case 10:
                     printf("Enter which position from end to be deleted:");
                     scanf("%d", &pos);
@@ -424,6 +453,12 @@ int main()
                         check_cycle(front);
                     else
                         puts("Enter other than zero to perform this operation");
+                    break;
+            case 12:
+                    puts("Detect and remove the cycles in a linke list");
+                    front->next->next->next->next = front->next;
+                    detect_and_remove_cycles(front);
+                    display(front);
                     break;
         }
     }
