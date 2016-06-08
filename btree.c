@@ -310,6 +310,9 @@ int sum(NODE *root)
 
 int same(NODE *root1, NODE *root2)
 {
+    if(root1 == NULL && root2 == NULL)
+        return 1;
+
     if(root1 == NULL || root2 == NULL)
         return 0;
 
