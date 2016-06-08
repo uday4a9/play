@@ -2,3 +2,6 @@ NODE* findLCAutil(NODE *root, int first, int second, int *s1, int *s2)
 NODE* findLCA(NODE *root, int first, int second)
 int printAncestors(NODE *root, int target)
 find inorder ancestor to the given node
+
+
+find whether given tree is subtree of another or not
