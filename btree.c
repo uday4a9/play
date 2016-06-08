@@ -334,6 +334,8 @@ int issame(NODE *root1, NODE *root2)
 
 int ismirror(NODE *root1, NODE *root2)
 {
+    if(root1 == NULL && root2 == NULL)
+        return 1;
     if(root1 == NULL || root2 == NULL)
         return 0;
     return ((root1->info == root2->info) &&
