@@ -367,8 +367,37 @@ int is_sum_tree(NODE *root)
     return 0;
 }
 
+int create_sum_tree_ind(NODE *root)
+{
+    // This logic will upgrade the values with the sum
+    //                 25
+    //          20          30
+    //      10      22          35
+    //      ---------OUTPUT--------
+    //                67 
+    //          32          35
+    //       0      0            0
+    int val;
+
+    if(root == NULL)
+        return 0;
+    
+    val = root->info;
+    root->info = create_sum_tree_ind(root->left) + create_sum_tree_ind(root->right);
+
+    return root->info + val;
+}
+
 int create_sum_tree(NODE *root)
 {
+    // This logic will upgrade the values with the sum
+    //                 25
+    //          20          30
+    //      10      22          35
+    //      ---------OUTPUT--------
+    //                142
+    //          52          65
+    //      10      22          35
     if(root == NULL)
         return 0;
     return (root->info += (create_sum_tree(root->left) + create_sum_tree(root->right)));
@@ -839,7 +868,8 @@ int main(int argc, char **argv)
            case 14:
                     inorder(root);
                     puts("");
-                    create_sum_tree(root);
+                    create_sum_tree_ind(root);
+                    //create_sum_tree(root);
                     inorder(root);
                     puts("");
                     if(is_sum_tree(root) == 1)

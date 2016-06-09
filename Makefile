@@ -1,5 +1,5 @@
 .SILENT:clean
-sll:
+sll:	clean
 	gcc -o sll sll.c -g
 btree:
 	gcc -o btree btree.c -g
