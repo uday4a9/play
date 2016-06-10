@@ -107,7 +107,7 @@ NODE* create_node(int info)
         puts("malloc failed");
         exit(1);
     }
-    new->right = NULL;
+    new->left = NULL;
     new->info = info;
     new->right = NULL;
 
