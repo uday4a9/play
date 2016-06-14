@@ -932,7 +932,7 @@ int main(int argc, char **argv)
                     if(dist > 0)
                         printf("Element %d occurs at level %d\n", element, dist);
                     else
-                        puts("Element not available in the list");
+                        puts("Element not available in the tree");
                     break;
           case 26:
                     printf("Enter two elements range : ");
