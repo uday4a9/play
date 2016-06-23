@@ -107,7 +107,7 @@ NODE* create_node(int info)
         puts("malloc failed");
         exit(1);
     }
-    new->right = NULL;
+    new->left = NULL;
     new->info = info;
     new->right = NULL;
 
@@ -309,6 +309,9 @@ int sum(NODE *root)
 
 int same(NODE *root1, NODE *root2)
 {
+    if(root1 == NULL && root2 == NULL)
+        return 1;
+
     if(root1 == NULL || root2 == NULL)
         return 0;
 
@@ -330,6 +333,8 @@ int issame(NODE *root1, NODE *root2)
 
 int ismirror(NODE *root1, NODE *root2)
 {
+    if(root1 == NULL && root2 == NULL)
+        return 1;
     if(root1 == NULL || root2 == NULL)
         return 0;
     return ((root1->info == root2->info) &&
@@ -361,8 +366,37 @@ int is_sum_tree(NODE *root)
     return 0;
 }
 
+int create_sum_tree_ind(NODE *root)
+{
+    // This logic will upgrade the values with the sum
+    //                 25
+    //          20          30
+    //      10      22          35
+    //      ---------OUTPUT--------
+    //                67 
+    //          32          35
+    //       0      0            0
+    int val;
+
+    if(root == NULL)
+        return 0;
+    
+    val = root->info;
+    root->info = create_sum_tree_ind(root->left) + create_sum_tree_ind(root->right);
+
+    return root->info + val;
+}
+
 int create_sum_tree(NODE *root)
 {
+    // This logic will upgrade the values with the sum
+    //                 25
+    //          20          30
+    //      10      22          35
+    //      ---------OUTPUT--------
+    //                142
+    //          52          65
+    //      10      22          35
     if(root == NULL)
         return 0;
     return (root->info += (create_sum_tree(root->left) + create_sum_tree(root->right)));
@@ -836,7 +870,8 @@ int main(int argc, char **argv)
            case 14:
                     inorder(root);
                     puts("");
-                    create_sum_tree(root);
+                    create_sum_tree_ind(root);
+                    //create_sum_tree(root);
                     inorder(root);
                     puts("");
                     if(is_sum_tree(root) == 1)
@@ -900,7 +935,7 @@ int main(int argc, char **argv)
                     if(dist > 0)
                         printf("Element %d occurs at level %d\n", element, dist);
                     else
-                        puts("Element not available in the list");
+                        puts("Element not available in the tree");
                     break;
           case 26:
                     printf("Enter two elements range : ");
