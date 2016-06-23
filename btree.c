@@ -116,7 +116,6 @@ NODE* create_node(int info)
 
 NODE* insert(NODE *root, int info)
 {
-    NODE *nn;
     if(root == NULL)
         root = create_node(info);
     else if(info < root->info)
@@ -451,7 +450,7 @@ void right_view(NODE *root, int level, int *clevel)
 int freenode(NODE *root)
 {
     int size;
-    size = 2 * sizeof(root->left) + sizeof(int);
+    size = sizeof(root);
     free(root);
     root = NULL;
     return size;
@@ -459,15 +458,18 @@ int freenode(NODE *root)
 
 int freetreesize(NODE *root)
 {
-    static int size = 0;
+    int size = 0;
 
     if(root == NULL)
         return 0;
 
+#if 0
     freetreesize(root->left);
     freetreesize(root->right);
     size += freenode(root);
-    return size;
+#endif
+
+    return sizeof(*root) + freetreesize(root->left) + freetreesize(root->right);
 }
 
 void treeleafs(NODE *root)
@@ -864,6 +866,7 @@ int main(int argc, char **argv)
                     puts("");
                     break;
           case 19:
+                    printf("size of node : %d \n", sizeof(*root));
                     printf("Total free size : %d \n", freetreesize(root));
                     root = NULL;
                     break;
