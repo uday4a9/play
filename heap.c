@@ -14,6 +14,9 @@
    3. It's a pure array based implementation.
    4. Deletion of any element is possible,
       but deleteing of root element makes sense
+
+   5. To perform the heap sort, insert n no. of elements
+      in a row, delete root from the array.
 */
 
 void printpeek(int *arr, int hsize)
