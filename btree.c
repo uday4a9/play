@@ -751,6 +751,21 @@ NODE* successor(NODE *root, NODE *tmp)
     return succ;
 }
 
+int isbalanced(NODE *root)
+{
+    int lh, rh;
+    
+    if(root == NULL)
+        return 1;
+
+    lh = height(root->left);
+    rh = height(root->right);
+
+    return (abs(lh-rh) <= 1 &&\
+            isbalanced(root->left) &&\
+            isbalanced(root->left));
+}
+
 int main(int argc, char **argv)
 {
     NODE *root=NULL, *final=NULL, *searched=NULL;
@@ -791,6 +806,7 @@ int main(int argc, char **argv)
         puts("30.sum of each path in tree");
         puts("31.has path sum");
         puts("32.successor of the given node");
+        puts("33.tree balanced or not");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         system("clear");
@@ -901,7 +917,7 @@ int main(int argc, char **argv)
                     puts("");
                     break;
           case 19:
-                    printf("size of node : %d \n", sizeof(*root));
+                    printf("size of node : %ld \n", sizeof(*root));
                     printf("Total free size : %d \n", freetreesize(root));
                     root = NULL;
                     break;
@@ -981,6 +997,9 @@ int main(int argc, char **argv)
                         printf("Successor node : %d\n", final->info);
                     else
                         puts("No more successor node");
+                    break;
+          case 33:
+                    isbalanced(root) ? puts("BALANCED") : puts("NOT BALANCED");
                     break;
         }
     }
