@@ -763,7 +763,7 @@ int isbalanced(NODE *root)
 
     return (abs(lh-rh) <= 1 &&\
             isbalanced(root->left) &&\
-            isbalanced(root->left));
+            isbalanced(root->right));
 }
 
 int main(int argc, char **argv)
